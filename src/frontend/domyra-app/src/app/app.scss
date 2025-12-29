@@ -1,0 +1,22 @@
+ main {
+     flex: 1 1 auto;
+     display: flex;
+     justify-content: center;
+     padding: 2rem 1rem;
+ }
+
+ .content {
+     flex: 1 1 auto;
+     background: #ffffff;
+     border-radius: 6px;
+     padding: 1.5rem;
+     min-width: 0;
+     /* prevents overflow in flex layouts */
+ }
+
+ .layout {
+     display: flex;
+     width: 100%;
+     max-width: 1200px;
+     gap: 1.5rem;
+ }
