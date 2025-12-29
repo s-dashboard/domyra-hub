@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Domyra.Tests/">
+    <Project Path="Domyra.Tests/Domyra.Test.csproj" />
+  </Folder>
+  <Project Path="Domyra.Api/Domyra.Api.csproj" />
+  <Project Path="Domyra.Application/Domyra.Application.csproj" />
+  <Project Path="Domyra.Domain/Domyra.Domain.csproj" />
+  <Project Path="Domyra.Infrastructure/Domyra.Infrastructure.csproj" />
+</Solution>
