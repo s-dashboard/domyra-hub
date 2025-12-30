@@ -16,6 +16,7 @@ public static class DeviceEndpoints
         group.MapPost("/", CreateDevice);
         group.MapGet("/{id:int}", GetDeviceById);
         group.MapPut("/{id:int}", UpdateDevice);
+        group.MapPut("/{id:int}/activate", ActivateDevice);
 
         return endpoints;
     }
@@ -47,6 +48,14 @@ public static class DeviceEndpoints
         ISender sender)
     {
         await sender.Send(command);
+        return Results.NoContent();
+    }
+
+    private async static Task<IResult> ActivateDevice(
+        int id,
+        ISender sender)
+    {
+        await sender.Send(new ActivateDeviceCommand(id));
         return Results.NoContent();
     }
 }

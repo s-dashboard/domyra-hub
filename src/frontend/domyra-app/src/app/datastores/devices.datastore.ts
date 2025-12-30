@@ -6,9 +6,11 @@ import { environment } from '../../environments/environment';
 import { SaveDeviceRequest } from '../requests/savedevice.request';
 import { ErrorService } from '../services/error.service';
 import { LoaderService } from '../services/loader.service';
+import { Device } from '../models/device.model';
 
 @Injectable({ providedIn: 'root' })
 export class DevicesDataStore {
+  
   private source: string = `${environment.apiUri}/devices`;
   private _devices$: BehaviorSubject<DeviceResponse[]> = new BehaviorSubject<DeviceResponse[]>([]);
   private _selectedDevice$: BehaviorSubject<DeviceResponse | null> =
@@ -43,6 +45,21 @@ export class DevicesDataStore {
     const save$ = id ? this.update(request) : this.add(request);
 
     return this.loader.wrap(save$.pipe(tap(() => this.fetchAll())), `Saving device "${request.name}"`);
+  }
+
+  activate(id: number, activateText: string) {
+    this.loader.wrap(this.http
+      .put<null>(`${this.source}/${id}/activate`,null, {
+        observe: 'response',
+      })
+      .pipe(
+        tap(() => this.fetchAll()),
+        catchError((err) => this.errors.handleBadRequest(err)),
+      ),
+      activateText
+    ).subscribe(() => {
+      console.log('activate/deactivate');
+    });
   }
 
   private add(request: SaveDeviceRequest): Observable<DeviceResponse | null> {

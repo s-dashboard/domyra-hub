@@ -1,12 +1,13 @@
 import { Component, Signal } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
-import { deviceColumns } from '../../models/device.model';
+import { Device, deviceColumns } from '../../models/device.model';
 import { DevicesDataStore } from '../../datastores/devices.datastore';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { DeviceResponse } from '../../responses/device.response';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DevicesService } from '../../services/devices.service';
 
 @Component({
   selector: 'app-devices',
@@ -15,11 +16,13 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrl: './devices.scss',
 })
 export class Devices {
+
   dataSource: Signal<DeviceResponse[]>;
   displayedColumns = deviceColumns;
 
   constructor(
     private readonly deviceData: DevicesDataStore,
+    private readonly deviceService: DevicesService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
   ) {
@@ -29,5 +32,10 @@ export class Devices {
 
   onAddClick() {
     this.router.navigate(['add'], { relativeTo: this.route });
+  }
+
+  onActivateClick(deviceResponse: DeviceResponse) {
+    const device: Device = deviceResponse;
+    this.deviceService.activate(device);
   }
 }

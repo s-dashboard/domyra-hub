@@ -1,4 +1,6 @@
 using Domyra.Application.Contracts.Repositories;
+using Domyra.Application.Contracts.Services;
+using Domyra.Application.Features.Devices.Services;
 using Domyra.Infrastructure.Persistence;
 using Domyra.Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -15,7 +17,12 @@ public static class Di
         services.AddDbContext<DomyraContext>(options => 
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
         );
+        
+        // Repositories
         services.AddScoped<IDeviceRepository, DeviceRepository>();
+        
+        // Services
+        services.AddScoped<IDeviceService, DeviceService>();
         
         return services;
     }
