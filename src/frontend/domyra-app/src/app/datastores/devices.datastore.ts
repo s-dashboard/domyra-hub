@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { SaveDeviceRequest } from '../requests/savedevice.request';
 import { ErrorService } from '../services/error.service';
+import { LoaderService } from '../services/loader.service';
 
 @Injectable({ providedIn: 'root' })
 export class DevicesDataStore {
@@ -16,30 +17,32 @@ export class DevicesDataStore {
   constructor(
     private readonly http: HttpClient,
     private readonly errors: ErrorService,
+    private readonly loader: LoaderService
   ) {}
 
   readonly devices$ = this._devices$.asObservable();
   readonly selectedDevice$ = this._selectedDevice$.asObservable();
 
   fetchSingle(id: number) {
-    this.http
+    this.loader.wrap(this.http
       .get<DeviceResponse>(`${this.source}/${id}`)
       .pipe(catchError((err) => this.errors.handleBadRequest(err)))
-      .subscribe((dto) => this._selectedDevice$.next(dto));
+    , 'Fetch device..').subscribe((dto) => this._selectedDevice$.next(dto));
   }
 
   fetchAll() {
-    this.http
+    this.loader.wrap(
+      this.http
       .get<DeviceResponse[]>(`${this.source}`)
       .pipe(catchError((err) => this.errors.handleBadRequest(err)))
-      .subscribe((dtos) => this._devices$.next(dtos));
+    ,'Fetching devices..').subscribe((dtos) => this._devices$.next(dtos));
   }
 
   save(request: SaveDeviceRequest): Observable<DeviceResponse | null> {
     const id = request?.id;
     const save$ = id ? this.update(request) : this.add(request);
 
-    return save$.pipe(tap(() => this.fetchAll()));
+    return this.loader.wrap(save$.pipe(tap(() => this.fetchAll())), `Saving device "${request.name}"`);
   }
 
   private add(request: SaveDeviceRequest): Observable<DeviceResponse | null> {
