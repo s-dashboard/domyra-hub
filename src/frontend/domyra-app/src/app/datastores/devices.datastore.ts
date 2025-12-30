@@ -1,66 +1,63 @@
-import { Injectable } from "@angular/core";
-import { catchError, map, Observable } from "rxjs";
-import { DeviceResponse } from "../responses/device.response";
-import { HttpClient, HttpResponse } from "@angular/common/http";
-import { environment } from "../../environments/environment";
-import { SaveDeviceRequest } from "../requests/savedevice.request";
-import { ErrorService } from "../services/error.service";
+import { Injectable } from '@angular/core';
+import { catchError, map, Observable, BehaviorSubject, tap } from 'rxjs';
+import { DeviceResponse } from '../responses/device.response';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { SaveDeviceRequest } from '../requests/savedevice.request';
+import { ErrorService } from '../services/error.service';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class DevicesDataStore {
+  private source: string = `${environment.apiUri}/devices`;
+  private _devices$: BehaviorSubject<DeviceResponse[]> = new BehaviorSubject<DeviceResponse[]>([]);
+  private _selectedDevice$: BehaviorSubject<DeviceResponse | null> =
+    new BehaviorSubject<DeviceResponse | null>(null);
 
-    private source: string = `${environment.apiUri}/devices`; 
+  constructor(
+    private readonly http: HttpClient,
+    private readonly errors: ErrorService,
+  ) {}
 
-    constructor(private readonly http: HttpClient,
-        private readonly errors: ErrorService
-    ) {}
-    
-    fetchSingle(id: number): Observable<DeviceResponse> {
-        return this.http.get<DeviceResponse>(`${this.source}/${id}`);
-    }
+  readonly devices$ = this._devices$.asObservable();
+  readonly selectedDevice$ = this._selectedDevice$.asObservable();
 
-    fetchAll(): Observable<DeviceResponse[]> {
-        return this.http.get<DeviceResponse[]>(`${this.source}`);
-    }
+  fetchSingle(id: number) {
+    this.http
+      .get<DeviceResponse>(`${this.source}/${id}`)
+      .pipe(catchError((err) => this.errors.handleBadRequest(err)))
+      .subscribe((dto) => this._selectedDevice$.next(dto));
+  }
 
-    save(request: SaveDeviceRequest): Observable<DeviceResponse|null> {
-        const id = request.body?.id;
+  fetchAll() {
+    this.http
+      .get<DeviceResponse[]>(`${this.source}`)
+      .pipe(catchError((err) => this.errors.handleBadRequest(err)))
+      .subscribe((dtos) => this._devices$.next(dtos));
+  }
 
-        if (id) {
-            // Update existing device
-            return this.update(request); 
-        }
+  save(request: SaveDeviceRequest): Observable<DeviceResponse | null> {
+    const id = request?.id;
+    const save$ = id ? this.update(request) : this.add(request);
 
-        // Create new device
-        return this.add(request);
-    }
+    return save$.pipe(tap(() => this.fetchAll()));
+  }
 
-    private add(request: SaveDeviceRequest): Observable<DeviceResponse> {
-        return this.http.post<DeviceResponse>(
-            this.source,
-            request
-        ).pipe(
-            catchError(err => this.errors.handleBadRequest(err))
-        );
-    }
+  private add(request: SaveDeviceRequest): Observable<DeviceResponse | null> {
+    return this.http
+      .post<DeviceResponse>(this.source, request)
+      .pipe(catchError((err) => this.errors.handleBadRequest(err)));
+  }
 
-    private update(request: SaveDeviceRequest): Observable<null> {
-        const id = request.body?.id;
+  private update(request: SaveDeviceRequest): Observable<DeviceResponse | null> {
+    const id = request?.id;
 
-        return this.http.put<null>(
-            `${this.source}/${id}`,
-            request, {
-                observe: 'response'
-            }
-        ).pipe(
-            map((res: HttpResponse<void>) => {
-                // Explicit success handling
-                if (res.status === 204) {
-                return null;
-                }
-                return null;
-            }),
-            catchError(err => this.errors.handleBadRequest(err))
-        );
-    }
+    return this.http
+      .put<null>(`${this.source}/${id}`, request, {
+        observe: 'response',
+      })
+      .pipe(
+        map(() => null),
+        catchError((err) => this.errors.handleBadRequest(err)),
+      );
+  }
 }

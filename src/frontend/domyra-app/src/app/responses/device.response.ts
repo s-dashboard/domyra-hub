@@ -1,6 +1,3 @@
-import { Device } from "../models/device.model";
-import { BaseResponse } from "./base.response";
+import { Device } from '../models/device.model';
 
-export interface DeviceResponse extends BaseResponse {
-    device?: Device,
-}
+export interface DeviceResponse extends Device {}

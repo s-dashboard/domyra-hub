@@ -40,6 +40,8 @@ public class SaveDeviceCommandHandler : IRequestHandler<SaveDeviceCommand, Devic
             device.Name = request.Name;
             device.Description =  request.Description;
             device.State = request.State;
+            
+            _deviceRepository.MarkAsChanged(device);
         }
 
         await _deviceRepository.CommitChangesAsync(cancellationToken);

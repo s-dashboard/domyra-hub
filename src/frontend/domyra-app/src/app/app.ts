@@ -1,14 +1,17 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './components/header/header';
 import { Sidenav } from './components/sidenav/sidenav';
+import { AppTitleService } from './components/services/app-title.service';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, Header, Sidenav],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('domyra-app');
+  constructor(private readonly appTitle: AppTitleService) {
+    this.appTitle.setTitle('Domyra - Hub');
+  }
 }

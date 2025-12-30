@@ -1,10 +1,9 @@
-using Domyra.Domain.Enums;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 namespace Domyra.Infrastructure.Persistence.Configurations;
 
 using Domain.Entities;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 public class DeviceConfiguration : BaseConfiguration<Device>
 {
@@ -23,8 +22,8 @@ public class DeviceConfiguration : BaseConfiguration<Device>
             .HasColumnName("description");
 
         builder.Property(d => d.State)
+            .IsRequired()
             .HasDefaultValue(DeviceState.Inactive)
             .HasColumnName("state");
-
     }
 }

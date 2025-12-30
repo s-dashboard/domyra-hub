@@ -1,5 +1,3 @@
-import { Device } from "../models/device.model";
+import { Device } from '../models/device.model';
 
-export interface SaveDeviceRequest {
-    body: Device
-}
+export interface SaveDeviceRequest extends Device {}

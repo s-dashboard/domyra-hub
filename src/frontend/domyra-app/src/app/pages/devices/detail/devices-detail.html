@@ -1,0 +1,25 @@
+<form [formGroup]="form" class="form" (ngSubmit)="$event.preventDefault(); onSubmitForm()">
+  <h2>
+    @if (device$(); as device) {
+      <span>DeviceId: {{ device.id }}</span>
+    } @else {
+      <span>Add device</span>
+    }
+  </h2>
+  <mat-divider></mat-divider>
+  <div class="form-row">
+    <mat-form-field class="form-field">
+      <input matInput placeholder="Name" formControlName="name" />
+    </mat-form-field>
+  </div>
+  <div class="form-row">
+    <mat-form-field class="form-field">
+      <textarea matInput placeholder="Description" formControlName="description"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div class="form-actions">
+    <button matButton color="secondary" type="button" (click)="onGobackClick()">Cancel</button>
+    <button matButton="filled" color="primary" type="submit" [disabled]="!form.dirty">Save</button>
+  </div>
+</form>

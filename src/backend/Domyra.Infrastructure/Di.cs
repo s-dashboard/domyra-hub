@@ -1,6 +1,7 @@
 using Domyra.Application.Contracts.Repositories;
 using Domyra.Infrastructure.Persistence;
 using Domyra.Infrastructure.Persistence.Repositories;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,5 +18,17 @@ public static class Di
         services.AddScoped<IDeviceRepository, DeviceRepository>();
         
         return services;
+    }
+
+    public static IApplicationBuilder AddInfrastructure(this IApplicationBuilder app, bool isDevelopment)
+    {
+        if (!isDevelopment)
+            return app; 
+        
+        using var scope = app.ApplicationServices.CreateScope(); 
+        var db = scope.ServiceProvider.GetRequiredService<DomyraContext>();
+        db.Database.Migrate();
+        
+        return app;
     }
 }

@@ -9,7 +9,7 @@ public static class DeviceEndpoints
     public static IEndpointRouteBuilder MapDeviceEndpoints(
         this IEndpointRouteBuilder endpoints)
     {
-        var group = endpoints.MapGroup("/devices")
+        var group = endpoints.MapGroup("api/devices")
             .WithTags("Devices");
         
         group.MapGet("/", GetDevices);
