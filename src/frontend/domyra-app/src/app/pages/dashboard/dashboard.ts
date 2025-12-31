@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { WidgetGroup } from "../../components/widget-group/widget-group";
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [WidgetGroup],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

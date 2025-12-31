@@ -55,5 +55,6 @@ app.UseHttpsRedirection();
 // Endpoints
 // --------------------
 app.MapDeviceEndpoints();
+app.MapWidgetEndpoints();
 
 app.Run();

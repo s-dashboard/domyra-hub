@@ -6,7 +6,6 @@ import { environment } from '../../environments/environment';
 import { SaveDeviceRequest } from '../requests/savedevice.request';
 import { ErrorService } from '../services/error.service';
 import { LoaderService } from '../services/loader.service';
-import { Device } from '../models/device.model';
 
 @Injectable({ providedIn: 'root' })
 export class DevicesDataStore {

@@ -1,0 +1,25 @@
+@if(widgets(); as widgets) {
+    <mat-grid-list cols="3" rowHeight="2:1">
+        @for(widget of widgets; track widget.alias) {
+            <mat-grid-tile
+                [colspan]="widget.cols"
+                [rowspan]="widget.rows"
+            >
+                <!-- Angular widget -->
+                @if(widget.kind === 'angular') {
+                    <ng-container *ngComponentOutlet="widget.component"></ng-container>
+                }
+                
+                <!-- Web component -->
+                @if(widget.kind === 'web-component') {
+                    <div [innerHTML]="'<' + widget.elementName + '></' + widget.elementName + '>'"></div>
+                }
+                
+                <!-- Static HTML -->
+                @if(widget.kind === 'html') {
+                    <div [innerHTML]="widget.html"></div>
+                }
+            </mat-grid-tile>
+        }
+    </mat-grid-list>
+}

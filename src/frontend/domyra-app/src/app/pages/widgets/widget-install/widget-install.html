@@ -1,0 +1,30 @@
+<form [formGroup]="form" class="form" (ngSubmit)="$event.preventDefault(); onSubmitForm()">
+    <h2>
+        Install widget
+    </h2>
+    <mat-divider></mat-divider>
+    <div class="form-row">
+        <mat-form-field class="form-field">
+            <mat-label>Upload file</mat-label>
+            <input matInput formControlName="filename" readonly>
+            <button
+                mat-icon-button
+                matSuffix
+                (click)="fileInput.click()">
+                <mat-icon>attach_file</mat-icon>
+            </button>
+            <mat-hint>Max 1 MB</mat-hint>
+        </mat-form-field>
+        <input
+            type="file"
+            #fileInput
+            hidden
+            (change)="onFileSelected($event)"
+        />
+    </div>
+
+    <div class="form-actions">
+        <button matButton color="secondary" type="button" (click)="onGobackClick()">Cancel</button>
+        <button matButton="filled" color="primary" type="submit" [disabled]="!form.dirty">Install</button>
+    </div>
+</form>

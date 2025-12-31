@@ -3,6 +3,7 @@ using System;
 using Domyra.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Domyra.Infrastructure.Migrations
 {
     [DbContext(typeof(DomyraContext))]
-    partial class DomyraContextModelSnapshot : ModelSnapshot
+    [Migration("20251230223520_widgets")]
+    partial class widgets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,10 +71,6 @@ namespace Domyra.Infrastructure.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("alias");
 
-                    b.Property<int>("Cols")
-                        .HasColumnType("integer")
-                        .HasColumnName("cols");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -81,33 +80,9 @@ namespace Domyra.Infrastructure.Migrations
                         .HasColumnType("character varying(500)")
                         .HasColumnName("description");
 
-                    b.Property<string>("ElementName")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("element_name");
-
-                    b.Property<string>("Html")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)")
-                        .HasColumnName("html");
-
                     b.Property<int>("Id")
                         .HasColumnType("integer")
                         .HasColumnName("id");
-
-                    b.Property<string>("Kind")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("kind");
-
-                    b.Property<int>("Rows")
-                        .HasColumnType("integer")
-                        .HasColumnName("rows");
-
-                    b.Property<string>("ScriptUrl")
-                        .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)")
-                        .HasColumnName("script_url");
 
                     b.Property<int>("State")
                         .ValueGeneratedOnAdd()

@@ -1,6 +1,7 @@
 using Domyra.Application.Contracts.Repositories;
 using Domyra.Application.Contracts.Services;
 using Domyra.Application.Features.Devices.Services;
+using Domyra.Application.Features.Widgets.Services;
 using Domyra.Infrastructure.Persistence;
 using Domyra.Infrastructure.Persistence.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -20,9 +21,11 @@ public static class Di
         
         // Repositories
         services.AddScoped<IDeviceRepository, DeviceRepository>();
+        services.AddScoped<IWidgetRepository, WidgetRepository>();
         
         // Services
         services.AddScoped<IDeviceService, DeviceService>();
+        services.AddScoped<IWidgetService, WidgetService>();
         
         return services;
     }

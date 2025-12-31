@@ -17,4 +17,5 @@ public class DomyraContext : DbContext
     }
     
     public DbSet<Device> Devices { get; set; }
+    public DbSet<Widget> Widgets { get; set; }
 }
