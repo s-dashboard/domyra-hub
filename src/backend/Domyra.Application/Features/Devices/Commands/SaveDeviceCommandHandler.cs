@@ -19,7 +19,7 @@ public class SaveDeviceCommandHandler : IRequestHandler<SaveDeviceCommand, Devic
     {
         Device device;
 
-        if (request.Id is null)
+        if (request.Id is null || request.Id.Value == 0)
         {
             // Create device
             device = new Device()

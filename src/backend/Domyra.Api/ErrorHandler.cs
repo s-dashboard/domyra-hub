@@ -18,6 +18,15 @@ public static class ErrorHandler
                     context.Response.StatusCode = 404;
                     await context.Response.WriteAsJsonAsync(new { error = exception.Message });
                 }
+
+                if (exception is DomyraValidationException)
+                {
+                    context.Response.StatusCode = 400;
+                    var validationException = exception as DomyraValidationException;
+                    var validationResult = validationException?.GetValidationResult(); 
+                    
+                    await context.Response.WriteAsJsonAsync(validationResult);
+                }
                 else
                 {
                     context.Response.StatusCode = 500;
