@@ -1,4 +1,4 @@
-:host{
+:host {
     flex: 1;
     height: 100%;
 }
@@ -8,5 +8,39 @@
     height: 100%;
     flex: 1;
     flex-direction: column;
-    background-color: rebeccapurple;
+    justify-content: center;
+
+    &-forecast {
+        padding: 1em;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        flex: 1;
+
+        &-item {
+            flex: 0 0 20%;
+            max-width: 20%;
+            text-align: center;
+        }
+    }
+
+    &-localtemp {
+        align-self: center;
+        margin-bottom: 1.5em;
+    }
+}
+
+.current {
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.range {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.icon {
+    font-size: 1.5rem;
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, BehaviorSubject, tap } from 'rxjs';
+import { catchError, map, Observable, BehaviorSubject, tap, of } from 'rxjs';
 import { DeviceResponse } from '../responses/device.response';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -59,6 +59,17 @@ export class DevicesDataStore {
     ).subscribe(() => {
       console.log('activate/deactivate');
     });
+  }
+
+  getLastKnownDeviceValue(id: number): Observable<string | null> {
+    const labdata = {
+      current: "-12.00",
+      max: "-8.00",
+      min: "-31.00",
+    };
+
+    const json = JSON.stringify(labdata); 
+    return of(json); // just for evaluate code until real values exists from sensor/devices
   }
 
   private add(request: SaveDeviceRequest): Observable<DeviceResponse | null> {

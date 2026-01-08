@@ -1,7 +1,40 @@
 <div class="weather-widget">
-    <p>TODO: Implement weather!</p>
-    <ul>
-        <li>Show current temperature (local temp from sensor)</li>
-        <li>Show forcast for 5 days (min/max temp and a weather symbol) a head and a few hours ahead</li>
-    </ul>
+
+    @if(localTemperature(); as localTemp) {
+        <div class="weather-widget-localtemp">
+            <div class="current">{{ (localTemp.current| number:'1.0-1') }}°C</div>
+            <div class="range">
+                <span class="max">▲ {{ (localTemp.max| number:'1.0-1') }}°C</span>
+                <span class="min">▼ {{ (localTemp.min| number:'1.0-1') }}°C</span>
+            </div>
+        </div>
+    }
+
+    @if (hourlyForecast(); as hourforecast) {
+        <div class="weather-widget-forecast">
+            @for(h of hourforecast; track h.time) {
+            <div class="weather-widget-forecast-item">
+                <div>{{ h.time | date:'HH:mm' }}</div>
+                <div class="icon">{{ getWeatherIcon(h.weatherCode) }}</div>
+                <div>{{ h.temperature | number:'1.0-0' }}°C</div>
+            </div>
+            }
+        </div>
+    }
+
+    @if (dailyForecast(); as dailyforecast) {
+        <div class="weather-widget-forecast">
+            @for(d of dailyforecast; track d.date) {
+            <div class="weather-widget-forecast-item">
+                <div>{{ d.date | date:'EEE' }}</div>
+                <div class="icon">{{ getWeatherIcon(d.weatherCode) }}</div>
+                <div>
+                    {{ d.max | number:'1.0-0' }}°C /
+                    {{ d.min | number:'1.0-0' }}°C
+                </div>
+            </div>
+            }
+        </div>
+    }
+
 </div>
