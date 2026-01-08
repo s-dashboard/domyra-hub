@@ -8,6 +8,7 @@ import { Component, signal } from '@angular/core';
 })
 export class ClockWidget {
   readonly time = signal(this.format(new Date()));
+  readonly today = signal(this.formatDate(new Date()));
   private timerId?: number;
 
   ngOnInit() {
@@ -20,6 +21,10 @@ export class ClockWidget {
     if (this.timerId) {
       clearInterval(this.timerId);
     }
+  }
+
+  private formatDate(date: Date): string {
+    return date.toDateString();
   }
 
   private format(date: Date): string {

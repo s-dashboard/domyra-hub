@@ -2,13 +2,14 @@ import { Injectable, Type } from "@angular/core";
 import { WidgetDefinition } from "../models/widget.model";
 import { WidgetResponse } from "../responses/widget.response";
 import { ClockWidget } from "../components/widgets/clock-widget/clock-widget";
+import { WeatherWidget } from "../components/widgets/weather-widget/weather-widget";
 
 @Injectable({ providedIn: 'root' })
 export class WidgetLoaderService {
 
   registry: Record<string, Type<unknown>> = {
-      clock: ClockWidget
-      // status: StatusWidgetComponent,
+      clock: ClockWidget,
+      weather: WeatherWidget,
   };
 
   async load(dto: WidgetResponse): Promise<WidgetDefinition> {

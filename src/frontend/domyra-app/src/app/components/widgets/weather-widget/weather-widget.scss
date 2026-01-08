@@ -1,0 +1,12 @@
+:host{
+    flex: 1;
+    height: 100%;
+}
+
+.weather-widget {
+    display: flex;
+    height: 100%;
+    flex: 1;
+    flex-direction: column;
+    background-color: rebeccapurple;
+}
