@@ -44,9 +44,15 @@ public static class DeviceEndpoints
     }
     
     private async static Task<IResult> UpdateDevice(
+        int id,
         SaveDeviceCommand command,
         ISender sender)
     {
+        if (id != command.Id)
+        {
+            return Results.BadRequest("route id mismatch");
+        }
+        
         await sender.Send(command);
         return Results.NoContent();
     }

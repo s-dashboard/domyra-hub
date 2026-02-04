@@ -11,15 +11,14 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class WeatherWidget {
   localTemperature: Signal<LocalTemperature | null | undefined>;
-  hourlyForecast: Signal<HourlyForecast[] | undefined>;
+  currentHourForecast: Signal<HourlyForecast[] | undefined>;
   dailyForecast: Signal<DailyForecast[] | undefined>;
 
   constructor(private readonly weather: WeatherService) {
     this.localTemperature = toSignal(this.weather.currentLocalTemperature);
-    this.hourlyForecast = toSignal(this.weather.hourlyForecast);
+    this.currentHourForecast = toSignal(this.weather.currentHourForecast);
     this.dailyForecast = toSignal(this.weather.dailyForecast);
   }
 
   getWeatherIcon = (value: number) => weatherIcon(value);
-
 }

@@ -5,7 +5,7 @@ using MediatR;
 namespace Domyra.Application.Features.Validation;
 
 public class ValidationBehavior<TRequest, TResponse>
-    : IPipelineBehavior<TRequest, TResponse>
+    : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
     private readonly IEnumerable<IRequestValidator<TRequest>> _validators;
 

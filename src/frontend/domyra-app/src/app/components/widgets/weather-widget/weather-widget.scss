@@ -1,33 +1,37 @@
 :host {
-    flex: 1;
-    height: 100%;
+  flex: 1;
+  height: 100%;
+  padding: 1em;
 }
 
 .weather-widget {
+  display: flex;
+  height: 100%;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+
+  &-forecast {
     display: flex;
-    height: 100%;
-    flex: 1;
     flex-direction: column;
-    justify-content: center;
+    flex: 1;
 
-    &-forecast {
-        padding: 1em;
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        flex: 1;
-
-        &-item {
-            flex: 0 0 20%;
-            max-width: 20%;
-            text-align: center;
-        }
+    &-item {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
     }
+  }
 
-    &-localtemp {
-        align-self: center;
-        margin-bottom: 1.5em;
+  &-localtemp {
+    align-self: center;
+    display: flex;
+    margin-bottom: 1.5em;
+
+    &-forecast-item {
+      margin-right: 1em;
     }
+  }
 }
 
 .current {
@@ -35,12 +39,57 @@
   font-weight: 600;
 }
 
+.max-min {
+  flex: 1;
+  text-align: right;
+}
+
+.date {
+  width: 60px;
+}
+
 .range {
   display: flex;
-  gap: 0.5rem;
+  width: 100%;
   font-size: 0.9rem;
+  margin-left: 1em;
+  background: lightblue;
+  border-radius: 8px;
+  margin-bottom: 0.5em;
+  padding: 0 0.5em;
+
+  &-min {
+    display: flex;
+    flex: 0 0 35px;
+    margin: auto;
+    justify-content: end;
+  }
+
+  &-today {
+    flex: 1;
+    margin: auto;
+
+    .dot {
+      margin: auto;
+      width: 10px;
+      height: 10px;
+      background-color: blue;
+      border-radius: 5px;
+    }
+  }
+
+  &-max {
+    display: flex;
+    flex: 0 0 35px;
+    margin: auto;
+    justify-content: end;
+  }
 }
 
 .icon {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
+
+  &-large {
+    font-size: 2.5rem;
+  }
 }

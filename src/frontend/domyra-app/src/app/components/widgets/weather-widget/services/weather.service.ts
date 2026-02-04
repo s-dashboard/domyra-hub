@@ -32,7 +32,7 @@ export class WeatherService implements OnDestroy {
     `&daily=temperature_2m_min,temperature_2m_max,weathercode` +
     `&timezone=auto`;
 
-  private _hourlyForecast$: BehaviorSubject<HourlyForecast[]> = new BehaviorSubject<
+  private _currentHourForecast$: BehaviorSubject<HourlyForecast[]> = new BehaviorSubject<
     HourlyForecast[]
   >([]);
 
@@ -43,8 +43,8 @@ export class WeatherService implements OnDestroy {
   private _currentLocalTemperature$: BehaviorSubject<LocalTemperature | null> =
     new BehaviorSubject<LocalTemperature | null>(null);
 
-  get hourlyForecast() {
-    return this._hourlyForecast$.asObservable();
+  get currentHourForecast() {
+    return this._currentHourForecast$.asObservable();
   }
 
   get dailyForecast() {
@@ -125,7 +125,7 @@ export class WeatherService implements OnDestroy {
     const now = new Date();
 
     this.http.get<OpenMeteoResponse>(this.weatherApi).subscribe((data) => {
-      this.updateHourlyForecast(data, now);
+      this.updateCurrentHourForecast(data, now);
       this.updateDailyForecast(data);
     });
   }
@@ -140,19 +140,15 @@ export class WeatherService implements OnDestroy {
     this._dailyForecast$.next(dailyForecast);
   }
 
-  private updateHourlyForecast(data: OpenMeteoResponse, now: Date) {
-    const startIndex = data.hourly.time.findIndex((t) => new Date(t) >= now);
-    const HOURS_AHEAD = 5;
+  private updateCurrentHourForecast(data: OpenMeteoResponse, now: Date) {
+    const startIndex = data.hourly.time.findIndex((t) => new Date(t) >= now) - 1;
+    const hourlyForecast = data.hourly.time.slice(startIndex, startIndex + 1).map((time, i) => ({
+      time,
+      temperature: data.hourly.temperature_2m[startIndex + i],
+      weatherCode: data.hourly.weathercode[startIndex + i],
+    }));
 
-    const hourlyForecast = data.hourly.time
-      .slice(startIndex, startIndex + HOURS_AHEAD)
-      .map((time, i) => ({
-        time,
-        temperature: data.hourly.temperature_2m[startIndex + i],
-        weatherCode: data.hourly.weathercode[startIndex + i],
-      }));
-
-    this._hourlyForecast$.next(hourlyForecast);
+    this._currentHourForecast$.next(hourlyForecast);
   }
 
   ngOnDestroy() {
